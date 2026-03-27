@@ -6,11 +6,14 @@ import ClientZone from "@/components/ClientZone";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import CartDrawer from "@/components/CartDrawer";
+import { CartProvider } from "@/context/CartContext";
 
 const Index = () => {
   return (
-    <>
+    <CartProvider>
       <Navbar />
+      <CartDrawer />
       <HeroSection />
       <ProductCatalog />
       <WhyHydroponic />
@@ -18,7 +21,7 @@ const Index = () => {
       <ContactForm />
       <Footer />
       <WhatsAppButton />
-    </>
+    </CartProvider>
   );
 };
 
