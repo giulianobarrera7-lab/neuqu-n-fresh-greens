@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ShoppingCart } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 
 const links = [
   { href: "#productos", label: "Productos" },
@@ -8,6 +9,7 @@ const links = [
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const { totalItems, setIsOpen } = useCart();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-40 bg-foreground/90 backdrop-blur-md">
@@ -20,14 +22,40 @@ const Navbar = () => {
               {l.label}
             </a>
           ))}
+          <button
+            onClick={() => setIsOpen(true)}
+            className="relative p-2 text-background/80 hover:text-background transition-colors"
+            aria-label="Abrir carrito"
+          >
+            <ShoppingCart className="w-5 h-5" />
+            {totalItems > 0 && (
+              <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-accent text-accent-foreground text-xs font-bold flex items-center justify-center">
+                {totalItems}
+              </span>
+            )}
+          </button>
           <a href="#contacto" className="rounded-lg bg-accent px-5 py-2 text-sm font-semibold text-accent-foreground hover:bg-accent/90 transition-colors">
             Hacé tu pedido
           </a>
         </div>
 
-        <button onClick={() => setOpen(!open)} className="md:hidden text-background" aria-label="Menú">
-          {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        <div className="flex items-center gap-3 md:hidden">
+          <button
+            onClick={() => setIsOpen(true)}
+            className="relative p-2 text-background/80 hover:text-background transition-colors"
+            aria-label="Abrir carrito"
+          >
+            <ShoppingCart className="w-5 h-5" />
+            {totalItems > 0 && (
+              <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-accent text-accent-foreground text-xs font-bold flex items-center justify-center">
+                {totalItems}
+              </span>
+            )}
+          </button>
+          <button onClick={() => setOpen(!open)} className="text-background" aria-label="Menú">
+            {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
 
       {open && (
