@@ -150,6 +150,7 @@ const Dashboard = () => {
 
       const data = await res.json();
       toast({ title: "✅ Pedido creado", description: `${data.pedido.id_pedido} — Total: $${data.pedido.total.toLocaleString()}` });
+      setLastOrder(data.pedido);
       setForm(f => ({ ...f, nombre: "", contacto: "", direccion: "", cantidad: "" }));
       refreshAll();
     } catch (err: any) {
