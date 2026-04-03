@@ -49,6 +49,7 @@ const Dashboard = () => {
   const [reporte, setReporte] = useState<ReporteData | null>(null);
   const [loading, setLoading] = useState({ stock: true, pedidos: true, reporte: true });
   const [submitting, setSubmitting] = useState(false);
+  const [lastOrder, setLastOrder] = useState<any>(null);
 
   const [form, setForm] = useState({
     nombre: "",
