@@ -341,6 +341,26 @@ const Dashboard = () => {
                 </Button>
               </div>
             </form>
+
+            {lastOrder && (
+              <div className="mt-4 flex items-center gap-3 rounded-lg border border-primary/30 bg-primary/10 p-4">
+                <MessageCircle className="h-5 w-5 text-primary shrink-0" />
+                <p className="text-sm text-card-foreground flex-1">
+                  Pedido <strong>{lastOrder.id_pedido}</strong> creado — Total: <strong>{fmt(lastOrder.total)}</strong>
+                </p>
+                <a
+                  href={`https://wa.me/542942462405?text=${encodeURIComponent(
+                    `✅ *NUEVO PEDIDO - Lechuga Fresca*\n\n👤 *Cliente:* ${lastOrder.cliente.nombre}\n📞 *Contacto:* ${lastOrder.cliente.contacto}\n📍 *Dirección:* ${lastOrder.cliente.direccion}\n🏷️ *Tipo:* ${lastOrder.cliente.tipo}\n\n📦 *Cantidad:* ${lastOrder.cantidad} ${lastOrder.unidad}\n💰 *Total:* $${lastOrder.total.toLocaleString("es-AR")}\n💳 *Pago:* ${lastOrder.metodo_pago}\n🚚 *Logística:* ${lastOrder.medio_transporte}\n\n🆔 *ID Pedido:* ${lastOrder.id_pedido}`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors shrink-0"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  Confirmar por WhatsApp
+                </a>
+              </div>
+            )}
           </CardContent>
         </Card>
 
