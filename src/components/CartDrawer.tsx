@@ -1,7 +1,7 @@
 import { useCart } from "@/context/CartContext";
 import { X, Plus, Minus, Trash2, MessageCircle, CreditCard } from "lucide-react";
 
-const WHATSAPP_NUMBER = "5492994000000";
+const WHATSAPP_NUMBER = "5492942462405";
 
 const formatPrice = (n: number) => "$" + n.toLocaleString("es-AR");
 

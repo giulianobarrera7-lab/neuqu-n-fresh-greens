@@ -15,8 +15,8 @@ const Footer = () => {
           <div className="space-y-3">
             <h4 className="font-semibold text-background">Contacto</h4>
             <div className="space-y-2 text-sm">
-              <a href="tel:+5492994000000" className="flex items-center gap-2 hover:text-background transition-colors">
-                <Phone className="w-4 h-4" /> +54 299 400 0000
+              <a href="tel:+5492942462405" className="flex items-center gap-2 hover:text-background transition-colors">
+                <Phone className="w-4 h-4" /> +54 294 246 2405
               </a>
               <a href="mailto:info@hidroverde.com.ar" className="flex items-center gap-2 hover:text-background transition-colors">
                 <Mail className="w-4 h-4" /> info@hidroverde.com.ar
