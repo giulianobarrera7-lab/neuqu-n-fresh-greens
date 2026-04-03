@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Package, TrendingUp, ShoppingCart, BarChart3, RefreshCw, Leaf, ArrowLeft } from "lucide-react";
+import { Package, TrendingUp, ShoppingCart, BarChart3, RefreshCw, Leaf, ArrowLeft, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const API_BASE = "https://neuqu-n-fresh-greens-2.onrender.com";
