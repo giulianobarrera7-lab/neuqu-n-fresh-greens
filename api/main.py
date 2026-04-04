@@ -12,8 +12,8 @@ app = FastAPI(title="Sistema de Pedidos - Lechuga Fresca", version="2.0.0")
 
 # ─── CORS ─────────────────────────────────────────────────────
 # Reemplazá los valores con tus URLs reales de Lovable
-WEB_LECHUGA_URL  = os.getenv("WEB_LECHUGA_URL",  "https://tu-lechuga.lovable.app")
-HYDROGEST_URL    = os.getenv("HYDROGEST_URL",     "https://tu-hydrogest.lovable.app")
+WEB_LECHUGA_URL  = os.getenv("WEB_LECHUGA_URL",  "https://lovable.dev/projects/54f92460-9c75-4b26-b9db-594dad6c767e")
+HYDROGEST_URL    = os.getenv("HYDROGEST_URL",     "https://lovable.dev/projects/8a7043b5-eb5d-493f-903d-cdc046b8ebf0")
 
 app.add_middleware(
     CORSMiddleware,
