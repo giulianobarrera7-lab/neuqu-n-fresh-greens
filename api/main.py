@@ -23,7 +23,7 @@ STOCK_INICIAL     = 5000
 ARCHIVO_PEDIDOS   = "pedidos.json"
 ARCHIVO_STOCK     = "stock.json"
 ARCHIVO_PRODUCTOS = "productos.json"
-HYDROGEST_URL     = os.getenv("HYDROGEST_URL", "https://tu-hydrogest.lovable.app")
+HYDROGEST_URL     = os.getenv("HYDROGEST_URL", "https://id-preview--8a7043b5-eb5d-493f-903d-cdc046b8ebf0.lovable.app/")
 
 # ─── Schemas ──────────────────────────────────────────────────
 
