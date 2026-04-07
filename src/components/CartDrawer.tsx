@@ -50,8 +50,39 @@ const CartDrawer = () => {
 🆔 *ID Pedido:* WEB-${Date.now().toString(36).toUpperCase()}`;
   };
 
-  const handleWhatsApp = () => {
+  const handleWhatsApp = async () => {
     if (!form.nombre.trim() || !form.contacto.trim() || !form.direccion.trim()) return;
+
+    // Register order in API (fire-and-forget)
+    try {
+      await fetch("https://neuqu-n-fresh-greens.onrender.com/pedidos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          cliente: {
+            nombre: form.nombre,
+            contacto: form.contacto,
+            direccion: form.direccion,
+            tipo: form.tipo,
+          },
+          items: items.map((i) => {
+            const price = i.type === "unit" ? i.product.priceUnit : i.product.priceBox;
+            return {
+              producto_id: i.product.id,
+              nombre: i.product.name,
+              cantidad: i.quantity,
+              tipo_venta: i.type === "unit" ? "unidad" : "caja",
+              precio_unitario: price,
+              subtotal: price * i.quantity,
+            };
+          }),
+          metodo_pago: form.metodo_pago,
+        }),
+      });
+    } catch {
+      // Si falla, continuar normalmente
+    }
+
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildWhatsAppMessage())}`;
     window.open(url, "_blank");
     clearCart();
