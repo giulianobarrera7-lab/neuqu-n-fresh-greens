@@ -10,14 +10,13 @@ const MapSection = () => {
         </div>
         <div className="rounded-2xl overflow-hidden border border-border shadow-sm aspect-[16/7] w-full">
           <iframe
-            title="Ubicación HidroVerde — Neuquén, Patagonia Argentina"
-            src="https://maps.google.com/maps?q=Neuquen,Argentina&t=&z=13&ie=UTF8&iwloc=&output=embed"
+            title="Ubicación HidroVerde"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=-68.18%2C-38.98%2C-67.98%2C-38.90&layer=mapnik&marker=-38.9516%2C-68.0591"
             width="100%"
             height="100%"
             style={{ border: 0 }}
             allowFullScreen
             loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
           />
         </div>
         <p className="text-center text-muted-foreground text-sm mt-4">

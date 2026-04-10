@@ -23,6 +23,7 @@ const Index = () => {
       <ClientZone />
       <MapSection />
       <ContactForm />
+      <MapSection />
       <Footer />
       <WhatsAppButton />
     </CartProvider>
