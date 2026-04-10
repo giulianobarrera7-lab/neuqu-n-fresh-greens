@@ -21,7 +21,6 @@ const Index = () => {
       <WhyHydroponic />
       <Testimonials />
       <ClientZone />
-      <MapSection />
       <ContactForm />
       <MapSection />
       <Footer />
