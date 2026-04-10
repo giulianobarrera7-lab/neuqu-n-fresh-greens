@@ -2,7 +2,9 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import ProductCatalog from "@/components/ProductCatalog";
 import WhyHydroponic from "@/components/WhyHydroponic";
+import Testimonials from "@/components/Testimonials";
 import ClientZone from "@/components/ClientZone";
+import MapSection from "@/components/MapSection";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -17,7 +19,9 @@ const Index = () => {
       <HeroSection />
       <ProductCatalog />
       <WhyHydroponic />
+      <Testimonials />
       <ClientZone />
+      <MapSection />
       <ContactForm />
       <Footer />
       <WhatsAppButton />
