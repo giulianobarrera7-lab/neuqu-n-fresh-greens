@@ -1,24 +1,14 @@
 import { useEffect, useState } from "react";
 import { ShoppingCart, Loader2 } from "lucide-react";
 import { useCart, type CartProduct } from "@/context/CartContext";
+import { fetchProductosActivos, type Producto } from "@/lib/supabase";
 
 const API_URL = "https://neuqu-n-fresh-greens.onrender.com";
 const FALLBACK_IMG = "https://images.unsplash.com/photo-1622206151226-18ca2c9ab4a1?w=640&h=640&fit=crop";
 
-type ApiProduct = {
-  id: string;
-  nombre: string;
-  descripcion: string;
-  precio_unidad: number;
-  precio_caja: number;
-  unidades_por_caja: number;
-  imagen_url: string;
-  activo?: boolean;
-};
-
 const formatPrice = (n: number) => "$" + n.toLocaleString("es-AR");
 
-const toCartProduct = (p: ApiProduct): CartProduct => ({
+const toCartProduct = (p: Producto): CartProduct => ({
   id: p.id ?? p.nombre,
   name: p.nombre,
   img: p.imagen_url || FALLBACK_IMG,
@@ -29,17 +19,23 @@ const toCartProduct = (p: ApiProduct): CartProduct => ({
 
 const ProductCatalog = () => {
   const { addItem } = useCart();
-  const [products, setProducts] = useState<ApiProduct[]>([]);
+  const [products, setProducts] = useState<Producto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch(`${API_URL}/productos?solo_activos=true`)
-      .then((r) => r.json())
-      .then((data) => {
-        setProducts(data.productos ?? []);
+    fetchProductosActivos()
+      .then((data) => setProducts(data))
+      .catch(async () => {
+        // Fallback al API de Render si Supabase falla
+        try {
+          const r = await fetch(`${API_URL}/productos?solo_activos=true`);
+          const json = await r.json();
+          setProducts(json.productos ?? []);
+        } catch {
+          setError("No se pudieron cargar los productos");
+        }
       })
-      .catch(() => setError("No se pudieron cargar los productos"))
       .finally(() => setLoading(false));
   }, []);
 
