@@ -4,6 +4,7 @@ import { X, Plus, Minus, Trash2, MessageCircle, CreditCard, ArrowLeft } from "lu
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { insertarPedido, upsertCliente } from "@/lib/supabase";
 
 const WHATSAPP_NUMBER = "5492942462405";
 const formatPrice = (n: number) => "$" + n.toLocaleString("es-AR");
@@ -23,17 +24,11 @@ const CartDrawer = () => {
 
   if (!isOpen) return null;
 
-  const buildWhatsAppMessage = () => {
+  const buildWhatsAppMessage = (idWeb: string) => {
     const itemsDetail = items.map((i) => {
       const label = i.type === "unit" ? "unidad" : `caja x${i.product.boxSize}`;
-      const price = i.type === "unit" ? i.product.priceUnit : i.product.priceBox;
       return `${i.product.name} (${label}) x${i.quantity}`;
     }).join(", ");
-
-    const totalKg = items.reduce((acc, i) => {
-      const qty = i.type === "unit" ? i.quantity : i.quantity * (i.product.boxSize || 1);
-      return acc + qty;
-    }, 0);
 
     return `✅ *NUEVO PEDIDO - Lechuga Fresca*
 
@@ -47,43 +42,50 @@ const CartDrawer = () => {
 💳 *Pago:* ${form.metodo_pago}
 🚚 *Logística:* Pendiente de asignar
 
-🆔 *ID Pedido:* WEB-${Date.now().toString(36).toUpperCase()}`;
+🆔 *ID Pedido:* ${idWeb}`;
   };
 
   const handleWhatsApp = async () => {
     if (!form.nombre.trim() || !form.contacto.trim() || !form.direccion.trim()) return;
 
-    // Register order in API (fire-and-forget)
-    try {
-      await fetch("https://neuqu-n-fresh-greens.onrender.com/pedidos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          cliente: {
-            nombre: form.nombre,
-            contacto: form.contacto,
-            direccion: form.direccion,
-            tipo: form.tipo,
-          },
-          items: items.map((i) => {
-            const price = i.type === "unit" ? i.product.priceUnit : i.product.priceBox;
-            return {
-              producto_id: i.product.id,
-              nombre: i.product.name,
-              cantidad: i.quantity,
-              tipo_venta: i.type === "unit" ? "unidad" : "caja",
-              precio_unitario: price,
-              subtotal: price * i.quantity,
-            };
-          }),
-          metodo_pago: form.metodo_pago,
-        }),
-      });
-    } catch {
-      // Si falla, continuar normalmente
-    }
+    const idWeb = `WEB-${Date.now().toString(36).toUpperCase()}`;
+    const itemsData = items.map((i) => {
+      const price = i.type === "unit" ? i.product.priceUnit : i.product.priceBox;
+      return {
+        producto_id: i.product.id,
+        nombre: i.product.name,
+        cantidad: i.quantity,
+        tipo_venta: (i.type === "unit" ? "unidad" : "caja") as "unidad" | "caja",
+        precio_unitario: price,
+        subtotal: price * i.quantity,
+      };
+    });
 
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildWhatsAppMessage())}`;
+    // Guardar pedido + cliente en Supabase (fire-and-forget)
+    Promise.all([
+      insertarPedido({
+        cliente_nombre: form.nombre,
+        cliente_contacto: form.contacto,
+        cliente_direccion: form.direccion,
+        cliente_tipo: form.tipo,
+        metodo_pago: form.metodo_pago,
+        items: itemsData,
+        total: totalPrice,
+        estado: "pendiente",
+        id_web: idWeb,
+      }),
+      upsertCliente({
+        nombre: form.nombre,
+        contacto: form.contacto,
+        direccion: form.direccion,
+        tipo: form.tipo,
+        origen: "web",
+      }),
+    ]).catch(() => {
+      // Si Supabase falla, el pedido igual se confirma por WhatsApp
+    });
+
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildWhatsAppMessage(idWeb))}`;
     window.open(url, "_blank");
     clearCart();
     setStep("cart");
