@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { MessageCircle } from "lucide-react";
+import { upsertCliente } from "@/lib/supabase";
 
 const WHATSAPP_NUMBER = "5492942462405";
 
@@ -7,9 +8,16 @@ const ContactForm = () => {
   const [form, setForm] = useState({ name: "", phone: "", email: "", clientType: "particular", message: "" });
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In production, send to backend
+    // Guardar contacto en Supabase para marketing (fire-and-forget)
+    upsertCliente({
+      nombre: form.name,
+      contacto: form.phone || form.email,
+      direccion: "",
+      tipo: form.clientType === "particular" ? "Minorista" : "Mayorista",
+      origen: "formulario-web",
+    }).catch(() => {});
     setSubmitted(true);
   };
 
